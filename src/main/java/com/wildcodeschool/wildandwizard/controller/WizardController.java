@@ -16,12 +16,12 @@ import java.util.Optional;
 public class WizardController {
 
     @Autowired
-    private WizardRepository repository;
+    private WizardRepository wizardRepository;
 
     @GetMapping("/wizards")
     public String getAll(Model model) {
 
-        model.addAttribute("wizards", repository.findAll());
+        model.addAttribute("wizards", wizardRepository.findAll());
 
         return "wizards";
     }
@@ -32,7 +32,7 @@ public class WizardController {
 
         Wizard wizard = new Wizard();
         if (id != null) {
-            Optional<Wizard> optionalWizard = repository.findById(id);
+            Optional<Wizard> optionalWizard = wizardRepository.findById(id);
             if (optionalWizard.isPresent()) {
                 wizard = optionalWizard.get();
             }
@@ -45,14 +45,15 @@ public class WizardController {
     @PostMapping("/wizard")
     public String postWizard(@ModelAttribute Wizard wizard) {
 
-        repository.save(wizard);
+        wizardRepository.save(wizard);
+        
         return "redirect:/wizards";
     }
 
     @GetMapping("/wizard/delete")
     public String deleteWizard(@RequestParam Long id) {
 
-        repository.deleteById(id);
+        wizardRepository.deleteById(id);
 
         return "redirect:/wizards";
     }
